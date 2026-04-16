@@ -1,0 +1,27 @@
+@use 'variables' as *;
+
+// ─── CSS custom properties (runtime tokens) ──────────────────────────────────
+// JavaScript sets these on :root when the user changes the theme.
+// Sass variables are fallbacks for build-time styles.
+
+:root {
+  --color-primary:  #{$color-primary};
+  --color-accent:   #{$color-accent};
+  --color-surface:  #{$color-surface};
+  --color-text:     #{$color-text};
+  --color-muted:    #{$color-muted};
+  --color-error:    #{$color-error};
+  --color-success:  #{$color-success};
+
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+
+  --font-family: #{$font-family};
+  --font-size-base: #{$font-size-base};
+
+  --widget-width:  #{$widget-width};
+  --widget-height: #{$widget-height};
+  --widget-offset: #{$widget-offset};
+  --z-widget:      #{$z-widget};
+}

@@ -1,0 +1,42 @@
+div.config-panel(role="region" aria-label="Configuracion del chat")
+  div.config-panel__header
+    span.config-panel__title Configuracion
+    button.chat-header__btn(
+      type="button"
+      aria-label="Cerrar configuracion"
+      data-action="close-config"
+    )
+      svg(width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2")
+        line(x1="18" y1="6" x2="6" y2="18")
+        line(x1="6" y1="6" x2="18" y2="18")
+  div.config-panel__body
+    div.config-panel__group
+      span.config-panel__label Posicion
+      div.config-panel__row
+        each pos in ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+          button.config-panel__position-btn(
+            type="button"
+            data-position=pos
+            aria-pressed="false"
+            aria-label=`Posicion ${pos}`
+          )= pos
+    div.config-panel__group
+      span.config-panel__label Color de acento
+      div.config-panel__row
+        each color in ['#e94560', '#3a86ff', '#38b2ac', '#ed8936', '#9f7aea', '#48bb78']
+          button.config-panel__color-btn(
+            type="button"
+            data-color=color
+            aria-pressed="false"
+            aria-label=`Color ${color}`
+            style=`background:${color}`
+          )
+    div.config-panel__group
+      span.config-panel__label Razonamiento del agente
+      div.config-panel__row
+        each mode in ['hidden', 'visible', 'expandable']
+          button.config-panel__position-btn(
+            type="button"
+            data-tinker=mode
+            aria-pressed="false"
+          )= mode
