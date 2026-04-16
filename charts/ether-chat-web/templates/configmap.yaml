@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ether-chat-web.fullname" . }}-config
+  labels:
+    {{- include "ether-chat-web.labels" . | nindent 4 }}
+data:
+  VITE_BACKEND_URL: {{ .Values.appConfig.backendUrl | quote }}
+  VITE_AUTH_ENDPOINT: {{ .Values.appConfig.authEndpoint | quote }}
+  VITE_CHAT_ENDPOINT: {{ .Values.appConfig.chatEndpoint | quote }}
+  VITE_WIDGET_POSITION: {{ .Values.appConfig.widgetPosition | quote }}
+  VITE_WIDGET_MODE: {{ .Values.appConfig.widgetMode | quote }}
+  VITE_TINKER_MODE: {{ .Values.appConfig.tinkerMode | quote }}

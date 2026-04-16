@@ -1,0 +1,40 @@
+// ─── Design tokens ─────────────────────────────────────────────────────────
+// These are the default values. Runtime overrides come from CSS custom properties
+// set by ConfigStore via JavaScript.
+
+$color-primary:  #1a1a2e !default;
+$color-accent:   #e94560 !default;
+$color-surface:  #16213e !default;
+$color-text:     #eaeaea !default;
+$color-muted:    #888899 !default;
+$color-error:    #ff4757 !default;
+$color-success:  #2ed573 !default;
+
+$radius-sm:  4px;
+$radius-md:  8px;
+$radius-lg:  16px;
+
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+$font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+$font-size-sm:   0.75rem;
+$font-size-base: 0.875rem;
+$font-size-md:   1rem;
+
+$shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.4);
+$shadow-md:  0 4px 16px rgba(0, 0, 0, 0.5);
+$shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.6);
+
+$transition-fast:   0.15s ease;
+$transition-normal: 0.25s ease;
+
+$widget-width:  360px;
+$widget-height: 520px;
+$widget-offset: 24px;
+$header-height: 52px;
+$composer-height: 56px;
+$z-widget: 9000;

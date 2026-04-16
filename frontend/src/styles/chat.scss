@@ -1,0 +1,513 @@
+@use 'variables' as *;
+
+// ─── Widget container ─────────────────────────────────────────────────────────
+
+.chat-widget {
+  position: fixed;
+  width: var(--widget-width);
+  height: var(--widget-height);
+  max-height: 90vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: var(--z-widget);
+  transition: transform $transition-normal, opacity $transition-normal;
+
+  &[aria-hidden='true'] {
+    display: none;
+  }
+
+  // ─── Position variants ──────────────────────────────────────────────────
+  &--bottom-right {
+    bottom: var(--widget-offset);
+    right: var(--widget-offset);
+  }
+
+  &--bottom-left {
+    bottom: var(--widget-offset);
+    left: var(--widget-offset);
+  }
+
+  &--top-right {
+    top: var(--widget-offset);
+    right: var(--widget-offset);
+  }
+
+  &--top-left {
+    top: var(--widget-offset);
+    left: var(--widget-offset);
+  }
+
+  &--embedded {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+// ─── Floating toggle button ───────────────────────────────────────────────────
+
+.chat-toggle {
+  position: fixed;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-md;
+  z-index: var(--z-widget);
+  transition: transform $transition-fast, background $transition-fast;
+  color: var(--color-text);
+
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  &--bottom-right { bottom: var(--widget-offset); right: var(--widget-offset); }
+  &--bottom-left  { bottom: var(--widget-offset); left: var(--widget-offset); }
+  &--top-right    { top: var(--widget-offset); right: var(--widget-offset); }
+  &--top-left     { top: var(--widget-offset); left: var(--widget-offset); }
+}
+
+// ─── Header ──────────────────────────────────────────────────────────────────
+
+.chat-header {
+  height: $header-height;
+  min-height: $header-height;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  padding: 0 $spacing-md;
+  gap: $spacing-sm;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  &__title {
+    flex: 1;
+    font-size: $font-size-md;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-xs;
+  }
+
+  &__btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: $spacing-xs;
+    border-radius: var(--radius-sm);
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color $transition-fast, background $transition-fast;
+
+    &:hover {
+      color: var(--color-text);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+    }
+  }
+}
+
+// ─── Message list ─────────────────────────────────────────────────────────────
+
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+  }
+}
+
+// ─── Message bubble ───────────────────────────────────────────────────────────
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  gap: $spacing-xs;
+
+  &--user {
+    align-self: flex-end;
+    align-items: flex-end;
+  }
+
+  &--agent {
+    align-self: flex-start;
+    align-items: flex-start;
+  }
+
+  &__bubble {
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-lg;
+    font-size: $font-size-base;
+    line-height: 1.5;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  &--user &__bubble {
+    background: var(--color-accent);
+    color: #fff;
+    border-bottom-right-radius: $radius-sm;
+  }
+
+  &--agent &__bubble {
+    background: var(--color-primary);
+    color: var(--color-text);
+    border-bottom-left-radius: $radius-sm;
+  }
+
+  &__time {
+    font-size: $font-size-sm;
+    color: var(--color-muted);
+    padding: 0 $spacing-xs;
+  }
+}
+
+// ─── Tinker block ─────────────────────────────────────────────────────────────
+
+.tinker-block {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-size: $font-size-sm;
+  margin-top: $spacing-xs;
+  max-width: 100%;
+
+  &__header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: $spacing-xs $spacing-sm;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+    user-select: none;
+    color: var(--color-muted);
+
+    &:hover {
+      color: var(--color-text);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+    }
+  }
+
+  &__label {
+    flex: 1;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__body {
+    padding: $spacing-sm;
+    background: var(--color-primary);
+    color: var(--color-muted);
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-x: auto;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+}
+
+// ─── Typing indicator ─────────────────────────────────────────────────────────
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-md;
+  color: var(--color-muted);
+  font-size: $font-size-sm;
+
+  &__dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-muted);
+    animation: bounce 1.2s infinite ease-in-out;
+
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%            { transform: scale(1);   opacity: 1; }
+}
+
+// ─── Composer ─────────────────────────────────────────────────────────────────
+
+.composer {
+  min-height: $composer-height;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: flex-end;
+  padding: $spacing-sm;
+  gap: $spacing-sm;
+  background: var(--color-surface);
+
+  &__input {
+    flex: 1;
+    background: var(--color-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: $font-size-base;
+    padding: $spacing-sm $spacing-md;
+    resize: none;
+    min-height: 40px;
+    max-height: 120px;
+    overflow-y: auto;
+    line-height: 1.5;
+
+    &::placeholder {
+      color: var(--color-muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+  }
+
+  &__send {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    transition: transform $transition-fast, opacity $transition-fast;
+
+    &:hover:not(:disabled) {
+      transform: scale(1.08);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// ─── Config panel ─────────────────────────────────────────────────────────────
+
+.config-panel {
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  &__header {
+    height: $header-height;
+    min-height: $header-height;
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    padding: 0 $spacing-md;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__title {
+    flex: 1;
+    font-size: $font-size-md;
+    font-weight: 600;
+  }
+
+  &__body {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__label {
+    font-size: $font-size-sm;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  &__color-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color $transition-fast, transform $transition-fast;
+
+    &[aria-pressed='true'] {
+      border-color: var(--color-text);
+      transform: scale(1.15);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+    }
+  }
+
+  &__position-btn {
+    padding: $spacing-xs $spacing-sm;
+    background: var(--color-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--color-muted);
+    cursor: pointer;
+    font-size: $font-size-sm;
+    transition: color $transition-fast, border-color $transition-fast;
+
+    &[aria-pressed='true'] {
+      color: var(--color-text);
+      border-color: var(--color-accent);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+    }
+  }
+}
+
+// ─── Login form ───────────────────────────────────────────────────────────────
+
+.login-form {
+  width: 340px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: $spacing-xl;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: center;
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__label {
+    font-size: $font-size-sm;
+    color: var(--color-muted);
+  }
+
+  &__input {
+    background: var(--color-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-size: $font-size-base;
+    padding: $spacing-sm $spacing-md;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+  }
+
+  &__error {
+    color: var(--color-error);
+    font-size: $font-size-sm;
+    min-height: 1.2em;
+  }
+
+  &__submit {
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: $font-size-base;
+    font-weight: 600;
+    padding: $spacing-sm $spacing-md;
+    cursor: pointer;
+    transition: opacity $transition-fast;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+}

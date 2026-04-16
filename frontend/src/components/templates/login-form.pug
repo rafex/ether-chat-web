@@ -1,0 +1,23 @@
+div.page
+  form.login-form(novalidate)
+    h1.login-form__title Ether Chat
+    div.login-form__group
+      label.login-form__label(for="username") Usuario
+      input.login-form__input#username(
+        type="text"
+        name="username"
+        autocomplete="username"
+        required
+        aria-required="true"
+      )
+    div.login-form__group
+      label.login-form__label(for="password") Contrasena
+      input.login-form__input#password(
+        type="password"
+        name="password"
+        autocomplete="current-password"
+        required
+        aria-required="true"
+      )
+    p.login-form__error(role="alert" aria-live="polite")
+    button.login-form__submit(type="submit") Ingresar

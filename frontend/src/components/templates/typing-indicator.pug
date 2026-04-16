@@ -1,0 +1,9 @@
+div.typing-indicator(
+  role="status"
+  aria-label="El agente esta escribiendo"
+)
+  div.typing-indicator__dots(aria-hidden="true")
+    span.typing-indicator__dot
+    span.typing-indicator__dot
+    span.typing-indicator__dot
+  span= label || 'Escribiendo...'
