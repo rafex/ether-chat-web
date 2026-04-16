@@ -23,7 +23,7 @@ export class AuthService {
 
   /** Accept a pre-existing JWT token and store the session. */
   setJwt(token: string, expiresAt?: Date): void {
-    const session: Session = { token, expiresAt };
+    const session: Session = { token, expiresAt: expiresAt ?? undefined };
     this.sessionStore.set(session);
   }
 
