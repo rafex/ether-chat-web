@@ -29,7 +29,7 @@ just ci
 just help
 ```
 
-**To connect a real backend:** see [BACKEND.md](BACKEND.md)
+**To connect a real backend:** see [docs/backend.md](docs/backend.md)
 
 ## Stack
 
@@ -39,26 +39,28 @@ just help
 
 ## Documentation
 
-- [**ARCHITECTURE.md**](agents/ARCHITECTURE.md) - System design, modules, constraints
-- [**SPEC.md**](agents/specs/generic-web-chat/SPEC.md) - Feature specification  
-- [**COMMANDS.md**](agents/COMMANDS.md) - All available commands (just + make)
-- [**DECISIONS.md**](agents/DECISIONS.md) - Design decisions and rationale
-- [**STACK.md**](agents/STACK.md) - Technology choices
-- [**ROADMAP.md**](agents/ROADMAP.md) - Future work
+Human-facing guides live in [`docs/`](docs/):
+
+- [**docs/frontend.md**](docs/frontend.md) - Stack, structure and commands
+- [**docs/mock-backend.md**](docs/mock-backend.md) - Mock backend for local dev
+- [**docs/backend.md**](docs/backend.md) - Connect a real backend (API contract, env vars)
+- [**docs/container.md**](docs/container.md) - Docker and Docker Compose
+- [**docs/charts.md**](docs/charts.md) - Helm deployment
 
 ## Project Structure
 
 - **`frontend/`** - PWA application (Pug, Sass, Vite, TypeScript)
 - **`backend/`** - Mock backend for development (Node.js, TypeScript)
-- **`agents/`** - SpecNative context: product, architecture, specs, decisions
-- **`tasks/`** - Executable task decomposition from specs (7 completed)
-- **`container/`** - Docker & Docker Compose configuration
+- **`docs/`** - Human-facing guides
+- **`agents/`** - SpecNative: architecture, product, specs, decisions
+- **`tasks/`** - Task decomposition from specs
+- **`workflows/`** - Repeatable procedures (SpecNative)
+- **`pipelines/`** - CI/CD documentation (SpecNative)
+- **`container/`** - Docker & Docker Compose
 - **`charts/`** - Helm chart for Kubernetes deployment
 - **`.github/workflows/`** - CI pipelines
-- **`Makefile`** - Build and compilation only
-- **`justfile`** - Task runner: dev, test, lint, deploy, utilities
-- **`workflows/`** - Repeatable procedures
-- **`BACKEND.md`** - Backend integration and configuration guide
+- **`Makefile`** - Build system (install + compile)
+- **`justfile`** - Task runner (orchestrates everything)
 
 ## Development
 

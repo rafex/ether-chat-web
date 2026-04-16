@@ -27,7 +27,7 @@ just dev-mock     # Frontend + mock backend (recomendado)
 just type-watch   # Ver cambios en TypeScript (sin bundling)
 ```
 
-**Para conectar un backend real:** ver [`BACKEND.md`](../BACKEND.md)
+**Para conectar un backend real:** ver [`docs/backend.md`](../docs/backend.md)
 
 ### Tests
 

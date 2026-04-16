@@ -1,13 +1,5 @@
 # Container
 
-Artefactos para ejecutar el chat en contenedor.
+Artefactos Docker para ejecutar el frontend en contenedor.
 
-## Responsabilidad
-
-- Dockerfile del frontend.
-- Docker Compose para uso local o demos.
-- Configuracion no sensible de runtime.
-
-## Regla
-
-No guardar secretos ni tokens en esta carpeta.
+Ver documentacion completa en [`docs/container.md`](../docs/container.md).

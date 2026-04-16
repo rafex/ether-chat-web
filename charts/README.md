@@ -1,12 +1,5 @@
 # Charts
 
-Charts Helm para desplegar Ether Chat Web.
+Helm chart para desplegar ether-chat-web en Kubernetes.
 
-## Responsabilidad
-
-- Templates Kubernetes.
-- Values configurables para imagen, endpoints, recursos e ingress.
-
-## Regla
-
-No guardar secretos en values versionados.
+Ver documentacion completa en [`docs/charts.md`](../docs/charts.md).
