@@ -1,0 +1,61 @@
+# Default values for ether-chat-web.
+# Override these in your environment-specific values file.
+
+replicaCount: 1
+
+image:
+  repository: ether-chat-web
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chat.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+# Application configuration injected as environment variables at runtime.
+# Do NOT put secrets here.
+appConfig:
+  backendUrl: ""
+  authEndpoint: "/api/auth/login"
+  chatEndpoint: "/api/chat/message"
+  widgetPosition: "bottom-right"
+  widgetMode: "floating"
+  tinkerMode: "hidden"
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 30
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8080
+  initialDelaySeconds: 3
+  periodSeconds: 10
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
