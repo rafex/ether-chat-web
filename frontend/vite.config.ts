@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { defineConfig, type Plugin } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig as defineVitestConfig } from 'vitest/config';
 import pug from 'pug';
 import { resolve } from 'path';
 
@@ -21,39 +21,35 @@ function pugPlugin(): Plugin {
   };
 }
 
-export default defineConfig({
-  plugins: [
-    pugPlugin(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['icons/*.png', 'icons/*.svg'],
-      manifest: false,
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-          },
-        ],
-      },
-    }),
-  ],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "@/styles/variables" as *;`,
+export default defineConfig(
+  defineVitestConfig({
+    plugins: [
+      pugPlugin(),
+    ],
+    resolve: {
+      alias: {
+        '@': resolve(process.cwd(), 'src'),
       },
     },
-  },
-  test: {
-    environment: 'jsdom',
-    globals: true,
-    include: ['src/**/*.test.ts'],
-  },
-});
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/styles/variables" as *;`,
+        },
+      },
+    },
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      include: ['src/**/*.test.ts'],
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: resolve(process.cwd(), 'index.html'),
+        },
+      },
+    },
+    publicDir: 'public',
+  })
+);
