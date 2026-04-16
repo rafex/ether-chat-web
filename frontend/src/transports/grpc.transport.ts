@@ -17,6 +17,7 @@ import type { ITransport } from './transport.interface';
 import type { TransportRequest, TransportResponse } from '@/types';
 
 export class GrpcTransport implements ITransport {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   send(_request: TransportRequest): Promise<TransportResponse> {
     return Promise.reject(
       new Error('GrpcTransport is not implemented. See grpc.transport.ts for instructions.'),

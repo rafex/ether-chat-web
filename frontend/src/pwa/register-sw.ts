@@ -10,6 +10,7 @@ export function registerServiceWorker(): void {
       navigator.serviceWorker
         .register(swUrl)
         .then((registration) => {
+          // eslint-disable-next-line no-console
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
           // Check for updates
@@ -18,6 +19,7 @@ export function registerServiceWorker(): void {
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // eslint-disable-next-line no-console
                   console.log('New content is available; please refresh.');
                   // You could show a "New content available" notification here
                 }
@@ -25,8 +27,9 @@ export function registerServiceWorker(): void {
             }
           });
         })
-        .catch((error) => {
-          console.error('Error during service worker registration:', error);
+        .catch((error: unknown) => {
+          const message = error instanceof Error ? error.message : String(error);
+          console.error('Error during service worker registration:', message);
         });
     });
   }
@@ -36,10 +39,11 @@ export function unregisterServiceWorker(): void {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready
       .then((registration) => {
-        registration.unregister();
+        void registration.unregister();
       })
-      .catch((error) => {
-        console.error(error.message);
+      .catch((error: unknown) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.error(message);
       });
   }
 }
