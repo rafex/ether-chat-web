@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { defineConfig, type Plugin } from 'vite';
 import { defineConfig as defineVitestConfig } from 'vitest/config';
+import { VitePWA } from 'vite-plugin-pwa';
 import pug from 'pug';
 import { resolve } from 'path';
 
@@ -25,6 +26,34 @@ export default defineConfig(
   defineVitestConfig({
     plugins: [
       pugPlugin(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['icons/*.png', 'icons/*.svg'],
+        manifest: false, // Usar manifest.json existente en public/
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+          skipWaiting: true,
+          runtimeCaching: [
+            {
+              urlPattern: /\/api\/.*/i,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'api-cache',
+                networkTimeoutSeconds: 10,
+                expiration: {
+                  maxEntries: 100,
+                  maxAgeSeconds: 60 * 60 * 24 // 24 horas
+                }
+              }
+            }
+          ]
+        },
+        devOptions: {
+          enabled: false // Deshabilitar en desarrollo para evitar conflictos
+        }
+      })
     ],
     resolve: {
       alias: {
