@@ -9,11 +9,12 @@ export function chatRoute(
   chatService: ChatService,
   configStore: ConfigStore,
   auth: AuthService,
+  requireAuth: boolean,
 ): void {
   let widget: ChatWidget | null = null;
 
   router.register('/chat', () => {
-    if (!auth.isAuthenticated()) {
+    if (requireAuth && !auth.isAuthenticated()) {
       router.navigate('/');
       return;
     }
@@ -22,10 +23,14 @@ export function chatRoute(
     widget?.destroy();
 
     widget = new ChatWidget(chatService, configStore);
+    const mode = configStore.get().mode;
 
-    if (configStore.get().mode === 'embedded') {
+    if (mode === 'embedded') {
       widget.mount(router.getOutlet());
+    } else if (mode === 'fullscreen') {
+      widget.mount(document.body);
     } else {
+      // floating (default)
       widget.mount(document.body);
       widget.getElement().addEventListener('widget-close', () => {
         widget?.destroy();

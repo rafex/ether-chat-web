@@ -22,6 +22,28 @@ Levanta frontend y mock backend juntos:
 | Frontend  | http://localhost:5173     |
 | Backend   | http://localhost:8000     |
 
+## Modos de autenticación
+
+El mock backend soporta dos modos que se corresponden con la variable de entorno `VITE_AUTH_REQUIRED` del frontend:
+
+### Modo con autenticación (por defecto)
+
+```bash
+just dev-mock
+```
+
+El usuario debe hacer login antes de acceder al chat. Usar las credenciales de la tabla de abajo.
+
+### Modo sin autenticación (`VITE_AUTH_REQUIRED=false`)
+
+```bash
+VITE_AUTH_REQUIRED=false just dev-mock
+```
+
+El frontend salta el login y accede directamente al chat. El mock backend permite requests anónimos al endpoint `/api/chat/message` (sin cabecera `Authorization`). No se requiere ninguna credencial.
+
+> **Comportamiento del mock:** si la petición llega sin cabecera `Authorization`, el backend la acepta como acceso anónimo. Si llega con un token inválido, devuelve `401`.
+
 ## ⚠️ Credenciales de Desarrollo (Públicas)
 
 | Usuario | Contraseña    | Propósito |

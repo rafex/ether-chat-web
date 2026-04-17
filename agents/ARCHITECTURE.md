@@ -49,16 +49,23 @@ ciclo de desarrollo.
 
 ## Flujo principal
 
-1. La app carga configuracion de build/runtime.
-2. El usuario abre el chat flotante o embebido.
-3. El servicio de autenticacion usa JWT existente o login
-   usuario/contrasena.
-4. La UI envia mensajes al servicio de chat.
-5. El servicio de chat usa el transporte configurado.
-6. La respuesta del agente se normaliza, separando texto visible y
+1. La app carga configuracion de build/runtime (env vars via Vite).
+2. El router evalua `VITE_AUTH_REQUIRED`:
+   - `true`: redirige a login si no hay sesion activa.
+   - `false`: redirige directo a `/chat`.
+3. Si auth es requerida, el usuario hace login; el token se guarda en
+   `SessionStore` (localStorage).
+4. La app monta el widget en modo `floating`, `embedded` o `fullscreen`
+   segun `VITE_WIDGET_MODE`.
+5. El usuario envia mensajes; el `ChatService` los delega al transporte.
+6. El transporte adjunta el token JWT si existe.
+7. La respuesta del agente se normaliza, separando texto visible y
    bloques `<tinker>`.
-7. La UI renderiza mensajes, estados y controles de detalle segun la
-   configuracion.
+8. La UI renderiza mensajes y aplica el modo de tinker configurado.
+9. El usuario puede abrir el `ConfigPanel` para cambiar colores (4 tokens
+   individuales o via tema predefinido: dark/light/rafex), posicion del
+   widget y modo de tinker en tiempo real. Los cambios persisten en
+   localStorage y se aplican via CSS custom properties.
 
 ## Restricciones
 
@@ -70,6 +77,8 @@ ciclo de desarrollo.
   sanitizacion.
 - La configuracion visual debe aplicarse por variables o tokens, no por
   cambios manuales al componente.
+- `VITE_AUTH_REQUIRED` se lee siempre del entorno de build; no puede ser
+  sobreescrito por el usuario desde localStorage.
 
 ## Riesgos
 

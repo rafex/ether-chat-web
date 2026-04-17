@@ -11,6 +11,27 @@ div.config-panel(role="region" aria-label="Configuracion del chat")
         line(x1="6" y1="6" x2="18" y2="18")
   div.config-panel__body
     div.config-panel__group
+      span.config-panel__label Tema
+      div.config-panel__row
+        button.config-panel__theme-btn.config-panel__theme-btn--dark(
+          type="button"
+          data-theme="dark"
+          aria-pressed="false"
+          aria-label="Tema oscuro"
+        ) Dark
+        button.config-panel__theme-btn.config-panel__theme-btn--light(
+          type="button"
+          data-theme="light"
+          aria-pressed="false"
+          aria-label="Tema claro"
+        ) Light
+        button.config-panel__theme-btn.config-panel__theme-btn--rafex(
+          type="button"
+          data-theme="rafex"
+          aria-pressed="false"
+          aria-label="Tema Rafex"
+        ) Rafex
+    div.config-panel__group
       span.config-panel__label Posicion
       div.config-panel__row
         each pos in ['top-left', 'top-right', 'bottom-left', 'bottom-right']
@@ -21,15 +42,35 @@ div.config-panel(role="region" aria-label="Configuracion del chat")
             aria-label=`Posicion ${pos}`
           )= pos
     div.config-panel__group
-      span.config-panel__label Color de acento
-      div.config-panel__row
-        each color in ['#e94560', '#3a86ff', '#38b2ac', '#ed8936', '#9f7aea', '#48bb78']
-          button.config-panel__color-btn(
-            type="button"
-            data-color=color
-            aria-pressed="false"
-            aria-label=`Color ${color}`
-            style=`background:${color}`
+      span.config-panel__label Colores personalizados
+      div.config-panel__color-inputs
+        div.config-panel__color-row
+          label.config-panel__color-label(for="input-color-primary") Fondo
+          input.config-panel__color-input(
+            type="color"
+            id="input-color-primary"
+            aria-label="Color de fondo principal"
+          )
+        div.config-panel__color-row
+          label.config-panel__color-label(for="input-color-accent") Acento
+          input.config-panel__color-input(
+            type="color"
+            id="input-color-accent"
+            aria-label="Color de acento"
+          )
+        div.config-panel__color-row
+          label.config-panel__color-label(for="input-color-surface") Superficie
+          input.config-panel__color-input(
+            type="color"
+            id="input-color-surface"
+            aria-label="Color de superficie"
+          )
+        div.config-panel__color-row
+          label.config-panel__color-label(for="input-color-text") Texto
+          input.config-panel__color-input(
+            type="color"
+            id="input-color-text"
+            aria-label="Color de texto"
           )
     div.config-panel__group
       span.config-panel__label Razonamiento del agente

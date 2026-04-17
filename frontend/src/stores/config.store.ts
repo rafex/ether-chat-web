@@ -1,4 +1,5 @@
-import type { ChatConfig, ColorConfig, WidgetPosition, TinkerMode } from '@/types';
+import type { ChatConfig, ColorConfig, WidgetPosition, TinkerMode, ThemePreset } from '@/types';
+import { THEMES } from '@/config/app.config';
 import { StorageService } from '@/services/storage.service';
 
 const CONFIG_KEY = 'ether_config';
@@ -38,6 +39,10 @@ export class ConfigStore {
 
   setTinkerMode(tinkerMode: TinkerMode): void {
     this.update({ tinkerMode });
+  }
+
+  setTheme(theme: ThemePreset): void {
+    this.update({ colors: { ...THEMES[theme] } });
   }
 
   subscribe(listener: ConfigListener): () => void {

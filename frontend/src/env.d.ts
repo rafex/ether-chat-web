@@ -16,6 +16,8 @@ interface ImportMetaEnv {
   readonly VITE_COLOR_ACCENT?: string;
   readonly VITE_COLOR_SURFACE?: string;
   readonly VITE_COLOR_TEXT?: string;
+  // 'true' | 'false' — si es false el chat abre directo sin login
+  readonly VITE_AUTH_REQUIRED?: string;
 }
 
 interface ImportMeta {

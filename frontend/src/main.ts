@@ -44,10 +44,11 @@ function bootstrap(): void {
 
   const chatService = new ChatService(transport, auth);
 
-  // Router
+  // requireAuth se lee directo del env, nunca del store (evita override via localStorage)
+  const requireAuth = import.meta.env.VITE_AUTH_REQUIRED !== 'false';
   const router = new Router(app);
-  loginRoute(router, auth);
-  chatRoute(router, chatService, configStore, auth);
+  loginRoute(router, auth, requireAuth);
+  chatRoute(router, chatService, configStore, auth, requireAuth);
   router.register('*', () => router.navigate('/'));
 
   router.start();

@@ -27,12 +27,8 @@ app.use(express.json());
 
 // ⚠️  CREDENCIALES DE DESARROLLO - NO USAR EN PRODUCCIÓN
 // Estas credenciales son públicas y solo existen para facilitar el desarrollo.
-const MOCK_BACKEND_CONFIG = {
-  IS_MOCK: true,
-  VERSION: '0.1.0-mock',
-  PURPOSE: 'Development and demonstration only',
-  WARNING: 'NOT FOR PRODUCTION USE - This is a mock backend with simulated authentication',
-};
+// Metadata visible en el startup log
+const MOCK_BACKEND_VERSION = '0.1.0-mock';
 
 // Almacenamiento en memoria (no persistente - se pierde al reiniciar)
 const sessions = new Map<string, { userId: string }>();
@@ -85,18 +81,19 @@ app.post('/api/auth/login', (req: Request, res: Response) => {
 
 app.post('/api/chat/message', (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Missing or invalid authorization' });
-    return;
-  }
 
-  // ⚠️  Verificación mock de token
-  // En un backend real, esto validaría un JWT firmado.
-  const token = authHeader.slice(7);
-  const session = sessions.get(token);
-  if (!session) {
-    res.status(401).json({ error: 'Invalid token' });
-    return;
+  // Modo anonimo: si no hay token se permite igual (simula VITE_AUTH_REQUIRED=false)
+  // En un backend real esto dependeria de la politica de acceso.
+  if (authHeader) {
+    if (!authHeader.startsWith('Bearer ')) {
+      res.status(401).json({ error: 'Invalid authorization header' });
+      return;
+    }
+    const token = authHeader.slice(7);
+    if (!sessions.has(token)) {
+      res.status(401).json({ error: 'Invalid token' });
+      return;
+    }
   }
 
   const { message, conversation_id } = req.body;
@@ -126,8 +123,8 @@ app.post('/api/chat/message', (req: Request, res: Response) => {
 
 // ─── Health Check ───────────────────────────────────────────────────────
 
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', version: MOCK_BACKEND_VERSION, timestamp: new Date().toISOString() });
 });
 
 // ─── Mock Response Generator ────────────────────────────────────────────
@@ -182,7 +179,7 @@ El frontend debe estar en http://localhost:5173`,
 
 // ─── Error Handling ───────────────────────────────────────────────────────
 
-app.use((req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Not found' });
 });
 

@@ -68,12 +68,13 @@ VITE_BACKEND_URL=http://localhost:3000 just dev
 | `VITE_BACKEND_URL`    | *(vacío)*            | URL base del backend                                     |
 | `VITE_AUTH_ENDPOINT`  | `/api/auth/login`    | Endpoint de autenticación                                |
 | `VITE_CHAT_ENDPOINT`  | `/api/chat/message`  | Endpoint de mensajes                                     |
+| `VITE_AUTH_REQUIRED`  | `true`               | `false` = acceso directo al chat sin login               |
 | `VITE_WIDGET_POSITION`| `bottom-right`       | Posición: `top-left`, `top-right`, `bottom-left`, `bottom-right` |
-| `VITE_WIDGET_MODE`    | `floating`           | Modo: `floating` o `embedded`                            |
+| `VITE_WIDGET_MODE`    | `floating`           | Modo: `floating`, `embedded` o `fullscreen`              |
 | `VITE_TINKER_MODE`    | `hidden`             | Bloques tinker: `hidden`, `visible`, `expandable`        |
-| `VITE_COLOR_PRIMARY`  | `#1a1a2e`            | Color primario (hex)                                     |
-| `VITE_COLOR_ACCENT`   | `#e94560`            | Color de acento (hex)                                    |
-| `VITE_COLOR_SURFACE`  | `#16213e`            | Color de superficie (hex)                                |
+| `VITE_COLOR_PRIMARY`  | `#1a1a2e`            | Color de fondo principal (hex)                           |
+| `VITE_COLOR_ACCENT`   | `#e94560`            | Color de acento — botones y burbujas del usuario (hex)   |
+| `VITE_COLOR_SURFACE`  | `#16213e`            | Color de superficie del widget (hex)                     |
 | `VITE_COLOR_TEXT`     | `#eaeaea`            | Color de texto (hex)                                     |
 
 ### 3. Contrato de API

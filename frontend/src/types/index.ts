@@ -35,8 +35,9 @@ export interface Session {
 // ─── Config types ─────────────────────────────────────────────────────────────
 
 export type WidgetPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-export type WidgetMode = 'floating' | 'embedded';
+export type WidgetMode = 'floating' | 'embedded' | 'fullscreen';
 export type TinkerMode = 'hidden' | 'visible' | 'expandable';
+export type ThemePreset = 'dark' | 'light' | 'rafex';
 
 export interface ColorConfig {
   primary: string;
@@ -53,6 +54,7 @@ export interface ChatConfig {
   backendUrl: string;
   authEndpoint: string;
   chatEndpoint: string;
+  requireAuth: boolean;
 }
 
 // ─── Transport types ──────────────────────────────────────────────────────────

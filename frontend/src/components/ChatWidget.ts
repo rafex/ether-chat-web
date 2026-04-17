@@ -104,8 +104,15 @@ export class ChatWidget {
   }
 
   private applyPositionClass(position: string): void {
-    const classes = ['chat-widget--bottom-right', 'chat-widget--bottom-left', 'chat-widget--top-right', 'chat-widget--top-left', 'chat-widget--embedded'];
+    const classes = [
+      'chat-widget--bottom-right',
+      'chat-widget--bottom-left',
+      'chat-widget--top-right',
+      'chat-widget--top-left',
+      'chat-widget--embedded',
+      'chat-widget--fullscreen',
+    ];
     classes.forEach((c) => this.element.classList.remove(c));
-    this.element.classList.add(`chat-widget--${position}`);
+    this.element.classList.add(`chat-widget--${this.configStore.get().mode === 'fullscreen' ? 'fullscreen' : position}`);
   }
 }

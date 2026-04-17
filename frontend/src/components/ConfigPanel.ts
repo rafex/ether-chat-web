@@ -1,5 +1,6 @@
-import type { ChatConfig, WidgetPosition, TinkerMode } from '@/types';
+import type { ChatConfig, WidgetPosition, TinkerMode, ThemePreset } from '@/types';
 import type { ConfigStore } from '@/stores/config.store';
+import { THEMES } from '@/config/app.config';
 import configPanelTemplate from './templates/config-panel.pug';
 
 export class ConfigPanel {
@@ -40,11 +41,33 @@ export class ConfigPanel {
       });
     });
 
-    // Color buttons
+    // Theme preset buttons
+    el.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const theme = btn.dataset['theme'] as ThemePreset;
+        if (theme && theme in THEMES) this.store.setTheme(theme);
+      });
+    });
+
+    // Preset accent color buttons
     el.querySelectorAll<HTMLButtonElement>('[data-color]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const color = btn.dataset['color'];
         if (color) this.store.setColors({ accent: color });
+      });
+    });
+
+    // Color pickers (input type=color) para los 4 tokens
+    const colorInputs: Record<string, keyof ChatConfig['colors']> = {
+      'input-color-primary': 'primary',
+      'input-color-accent':  'accent',
+      'input-color-surface': 'surface',
+      'input-color-text':    'text',
+    };
+    Object.entries(colorInputs).forEach(([id, token]) => {
+      el.querySelector<HTMLInputElement>(`#${id}`)?.addEventListener('input', (e) => {
+        const value = (e.target as HTMLInputElement).value;
+        this.store.setColors({ [token]: value });
       });
     });
 
@@ -66,12 +89,35 @@ export class ConfigPanel {
   }
 
   private syncUI(config: ChatConfig): void {
+    // Detectar si el config actual coincide con algun theme preset
+    const activeTheme = (Object.keys(THEMES) as ThemePreset[]).find((t) =>
+      THEMES[t].primary === config.colors.primary &&
+      THEMES[t].accent  === config.colors.accent  &&
+      THEMES[t].surface === config.colors.surface &&
+      THEMES[t].text    === config.colors.text,
+    );
+    this.element.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', String(btn.dataset['theme'] === activeTheme));
+    });
+
     this.element.querySelectorAll<HTMLButtonElement>('[data-position]').forEach((btn) => {
       btn.setAttribute('aria-pressed', String(btn.dataset['position'] === config.position));
     });
 
     this.element.querySelectorAll<HTMLButtonElement>('[data-color]').forEach((btn) => {
       btn.setAttribute('aria-pressed', String(btn.dataset['color'] === config.colors.accent));
+    });
+
+    // Sync color inputs con el estado actual
+    const fields: Array<[string, string]> = [
+      ['input-color-primary', config.colors.primary],
+      ['input-color-accent',  config.colors.accent],
+      ['input-color-surface', config.colors.surface],
+      ['input-color-text',    config.colors.text],
+    ];
+    fields.forEach(([id, value]) => {
+      const input = this.element.querySelector<HTMLInputElement>(`#${id}`);
+      if (input) input.value = value;
     });
 
     this.element.querySelectorAll<HTMLButtonElement>('[data-tinker]').forEach((btn) => {

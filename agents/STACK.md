@@ -57,18 +57,41 @@ Fuente de verdad de la base tecnologica del proyecto.
 - Backend REST:
   transporte inicial para auth y mensajes.
   Configuracion por variables de entorno `VITE_BACKEND_URL` y endpoints.
-  Ver `BACKEND.md` para el contrato completo.
+  Ver `docs/backend.md` para el contrato completo.
 - Backend gRPC/gRPC-web:
   transporte preparado por contrato, implementacion concreta pendiente.
 - Autenticacion JWT:
-  el frontend puede recibir y adjuntar tokens.
+  el frontend puede recibir y adjuntar tokens via query param `?token=`.
 - Login usuario/contrasena:
   flujo opcional contra endpoint configurable.
+  Puede desactivarse con `VITE_AUTH_REQUIRED=false`.
+
+## Modos del widget
+
+- `floating`: widget flotante en esquina configurable (default).
+- `embedded`: ocupa el contenedor raiz, sin toggle.
+- `fullscreen`: ocupa toda la pantalla, sin toggle.
+
+## Configuracion de colores y temas
+
+Los cuatro tokens de color del widget (primary, accent, surface, text) son
+configurables por variables de entorno en build time y por el usuario en runtime
+a traves del ConfigPanel. Los cambios en runtime persisten en localStorage.
+
+Temas predefinidos disponibles (aplican los 4 tokens de golpe):
+
+- `dark`: fondo oscuro azulado, acento rojo (default).
+- `light`: fondo claro grisáceo, acento rojo.
+- `rafex`: fondo oscuro profundo, acento verde-azulado (#00d4aa), estilo rafex.dev.
+
+El usuario puede mezclar: aplicar un tema base y luego ajustar tokens individuales.
 
 ## Restricciones
 
 - El frontend debe ser PWA.
 - No se deben hardcodear endpoints, tokens ni secretos.
+- `VITE_AUTH_REQUIRED` se lee siempre del entorno de build; no puede
+  ser sobreescrito por localStorage.
 - La compatibilidad gRPC del navegador debe resolverse por gRPC-web o
   gateway HTTP.
 - Las carpetas obligatorias de produccion son `frontend/`,
