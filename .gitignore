@@ -71,3 +71,8 @@ logs/
 .specnative/.venv/
 session-ses_*.md
 
+
+# opencode — worktrees (generados, no committear)
+.opencode/worktrees/
+.opencode/worktrees.db
+.opencode/worktrees.log
