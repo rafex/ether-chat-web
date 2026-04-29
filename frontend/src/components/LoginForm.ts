@@ -3,13 +3,23 @@ import loginTemplate from './templates/login-form.pug';
 
 type LoginSuccessHandler = () => void;
 
+interface LoginFormMessages {
+  emptyFields?: string;
+  genericError?: string;
+}
+
 export class LoginForm {
   private element: HTMLElement;
   private readonly auth: AuthService;
+  private readonly messages: Required<LoginFormMessages>;
   private onSuccess: LoginSuccessHandler | null = null;
 
-  constructor(auth: AuthService) {
+  constructor(auth: AuthService, messages?: LoginFormMessages) {
     this.auth = auth;
+    this.messages = {
+      emptyFields: messages?.emptyFields ?? 'Ingresa usuario y contraseña.',
+      genericError: messages?.genericError ?? 'Error al ingresar.',
+    };
     this.element = this.build();
   }
 
@@ -48,7 +58,7 @@ export class LoginForm {
     const password = (data.get('password') as string).trim();
 
     if (!username || !password) {
-      if (errorEl) errorEl.textContent = 'Ingresa usuario y contrasena.';
+      if (errorEl) errorEl.textContent = this.messages.emptyFields;
       return;
     }
 
@@ -59,7 +69,7 @@ export class LoginForm {
       await this.auth.login({ username, password });
       this.onSuccess?.();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error al ingresar.';
+      const msg = err instanceof Error ? err.message : this.messages.genericError;
       if (errorEl) errorEl.textContent = msg;
     } finally {
       if (submitBtn) submitBtn.disabled = false;

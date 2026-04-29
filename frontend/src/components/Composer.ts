@@ -1,11 +1,16 @@
 type SendHandler = (text: string) => void;
 
+interface ComposerOptions {
+  maxHeight?: number;
+}
+
 export class Composer {
   private readonly textarea: HTMLTextAreaElement;
   private readonly sendBtn: HTMLButtonElement;
+  private readonly maxHeight: number;
   private onSend: SendHandler | null = null;
 
-  constructor(container: HTMLElement) {
+  constructor(container: HTMLElement, options?: ComposerOptions) {
     const textarea = container.querySelector<HTMLTextAreaElement>('.composer__input');
     const sendBtn = container.querySelector<HTMLButtonElement>('.composer__send');
 
@@ -15,6 +20,7 @@ export class Composer {
 
     this.textarea = textarea;
     this.sendBtn = sendBtn;
+    this.maxHeight = options?.maxHeight ?? 120;
     this.bindEvents();
   }
 
@@ -62,6 +68,6 @@ export class Composer {
 
   private resize(): void {
     this.textarea.style.height = 'auto';
-    this.textarea.style.height = `${Math.min(this.textarea.scrollHeight, 120)}px`;
+    this.textarea.style.height = `${Math.min(this.textarea.scrollHeight, this.maxHeight)}px`;
   }
 }

@@ -4,6 +4,7 @@ import type { TransportRequest, TransportResponse } from '@/types';
 interface RestTransportConfig {
   baseUrl: string;
   chatEndpoint: string;
+  timeoutMs?: number;
 }
 
 export class RestTransport implements ITransport {
@@ -30,11 +31,20 @@ export class RestTransport implements ITransport {
       ...(request.conversationId ? { conversation_id: request.conversationId } : {}),
     });
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body,
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.config.timeoutMs ?? 30_000);
+
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
 
     if (!response.ok) {
       throw new Error(`Transport error: ${response.status} ${response.statusText}`);

@@ -4,6 +4,7 @@ import type { SessionStore } from '@/stores/session.store';
 interface AuthServiceConfig {
   baseUrl: string;
   authEndpoint: string;
+  timeoutMs?: number;
 }
 
 interface LoginResponse {
@@ -31,14 +32,23 @@ export class AuthService {
   async login(credentials: Credentials): Promise<Session> {
     const url = `${this.config.baseUrl}${this.config.authEndpoint}`;
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: credentials.username,
-        password: credentials.password,
-      }),
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.config.timeoutMs ?? 10_000);
+
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: credentials.username,
+          password: credentials.password,
+        }),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
 
     if (!response.ok) {
       throw new Error(`Auth error: ${response.status} ${response.statusText}`);
