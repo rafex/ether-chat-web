@@ -57,11 +57,11 @@ function renderFloatingToggle(
 
   btn.addEventListener('click', () => {
     widget.getElement().removeAttribute('aria-hidden');
-    btn.style.display = 'none';
+    btn.classList.add('chat-toggle--hidden');
   });
 
   widget.getElement().addEventListener('widget-close', () => {
     widget.getElement().setAttribute('aria-hidden', 'true');
-    btn.style.display = '';
+    btn.classList.remove('chat-toggle--hidden');
   });
 }

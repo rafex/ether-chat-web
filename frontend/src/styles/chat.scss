@@ -91,6 +91,8 @@
   &--bottom-left  { bottom: var(--widget-offset); left: var(--widget-offset); }
   &--top-right    { top: var(--widget-offset); right: var(--widget-offset); }
   &--top-left     { top: var(--widget-offset); left: var(--widget-offset); }
+
+  &--hidden { display: none; }
 }
 
 // ─── Header ──────────────────────────────────────────────────────────────────
