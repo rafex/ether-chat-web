@@ -55,7 +55,13 @@ export default defineConfig(
         }
       })
     ],
-    resolve: {
+    server: {
+    headers: {
+      'Content-Security-Policy':
+        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss: https:; img-src 'self' data: blob:; font-src 'self'; worker-src 'self'",
+    },
+  },
+  resolve: {
       alias: {
         '@': resolve(process.cwd(), 'src'),
       },
