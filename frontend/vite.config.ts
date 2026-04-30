@@ -58,7 +58,7 @@ export default defineConfig(
     server: {
     headers: {
       'Content-Security-Policy':
-        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss: https:; img-src 'self' data: blob:; font-src 'self'; worker-src 'self'",
+        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:* ws://localhost:* wss: https:; img-src 'self' data: blob:; font-src 'self'; worker-src 'self'",
     },
   },
   resolve: {

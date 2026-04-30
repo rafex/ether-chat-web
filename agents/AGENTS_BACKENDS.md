@@ -284,6 +284,36 @@ El frontend extrae el token, lo guarda y limpia el parámetro de la URL. A parti
 
 ---
 
+## Notas de desarrollo — CSP en el servidor Vite
+
+Al ejecutar `npm run dev`, Vite sirve el frontend con un header `Content-Security-Policy`. La directiva `connect-src` controla los orígenes a los que el frontend puede hacer `fetch`.
+
+**Problema**: si el backend corre en un puerto distinto al 5173 (p. ej. `:8080`), la URL `http://localhost:8080` no coincide con `'self'` ni con `https:`, por lo que el navegador bloquea las peticiones.
+
+**Solución aplicada** en `vite.config.ts`:
+
+```
+connect-src 'self' http://localhost:* ws://localhost:* wss: https:
+```
+
+Esto permite cualquier puerto de localhost en desarrollo. El header de producción (en `index.html`) no incluye `http://localhost:*` porque en producción el backend real debe servirse por HTTPS.
+
+Si se prefiere evitar por completo los problemas de CORS y CSP durante el desarrollo, se puede usar el proxy de Vite en lugar de `VITE_BACKEND_URL`:
+
+```ts
+// vite.config.ts — alternativa con proxy
+server: {
+  proxy: {
+    '/api': 'http://localhost:8080',
+    '/health': 'http://localhost:8080',
+  }
+}
+```
+
+Con el proxy, el frontend llama a `/api/...` en el mismo origen (`:5173`) y Vite lo reenvía al backend. No se necesita `VITE_BACKEND_URL` ni configuración de CORS en el backend para desarrollo.
+
+---
+
 ## Health check (opcional pero recomendado)
 
 ```http
